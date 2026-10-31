@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 
 
-public class WitchCircleProcessor extends StructureProcessor {
+public class WitchCircleProcessor implements StructureProcessor {
     public static final WitchCircleProcessor INSTANCE = new WitchCircleProcessor();
     public static final MapCodec<WitchCircleProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -38,7 +38,7 @@ public class WitchCircleProcessor extends StructureProcessor {
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader levelReader,
                                                              BlockPos jigsawPiecePos,
                                                              BlockPos jigsawPieceBottomCenterPos,
-                                                             StructureTemplate.StructureBlockInfo blockInfoLocal,
+                                                             BlockPos blockPosLocal,
                                                              StructureTemplate.StructureBlockInfo blockInfoGlobal,
                                                              StructurePlaceSettings structurePlacementData) {
         RandomSource randomSource = structurePlacementData.getRandom(blockInfoGlobal.pos());
@@ -49,7 +49,7 @@ public class WitchCircleProcessor extends StructureProcessor {
             blockInfoGlobal = new StructureTemplate.StructureBlockInfo(blockInfoGlobal.pos(), STONE_RANDOMIZER.get(randomSource), blockInfoGlobal.nbt());
         } else if (blockInfoGlobal.state().getBlock() == Blocks.STONE_BRICK_STAIRS) {
             blockInfoGlobal = new StructureTemplate.StructureBlockInfo(blockInfoGlobal.pos(), STAIRS_RANDOMIZER.get(randomSource), blockInfoGlobal.nbt());
-        } else if (blockInfoGlobal.state().getBlock() == Blocks.GRAY_STAINED_GLASS) {
+        } else if (blockInfoGlobal.state().getBlock() == Blocks.STAINED_GLASS.gray()) {
             if (levelReader instanceof WorldGenRegion worldGenRegion && !worldGenRegion.getCenter().equals(ChunkPos.containing(blockInfoGlobal.pos()))) {
                 return blockInfoGlobal;
             }
@@ -70,7 +70,8 @@ public class WitchCircleProcessor extends StructureProcessor {
         return blockInfoGlobal;
     }
 
-    protected StructureProcessorType<?> getType() {
+    @Override
+    public MapCodec<? extends StructureProcessor> codec() {
         return StructureProcessorTypeModule.WITCH_CIRCLE_PROCESSOR;
     }
 }

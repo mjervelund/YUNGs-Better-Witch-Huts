@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 
 
-public class PottedMushroomProcessor extends StructureProcessor {
+public class PottedMushroomProcessor implements StructureProcessor {
     public static final PottedMushroomProcessor INSTANCE = new PottedMushroomProcessor();
     public static final MapCodec<PottedMushroomProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -31,7 +31,7 @@ public class PottedMushroomProcessor extends StructureProcessor {
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader levelReader,
                                                              BlockPos jigsawPiecePos,
                                                              BlockPos jigsawPieceBottomCenterPos,
-                                                             StructureTemplate.StructureBlockInfo blockInfoLocal,
+                                                             BlockPos blockPosLocal,
                                                              StructureTemplate.StructureBlockInfo blockInfoGlobal,
                                                              StructurePlaceSettings structurePlacementData) {
         if (blockInfoGlobal.state().getBlock() == Blocks.POTTED_RED_MUSHROOM) {
@@ -41,7 +41,8 @@ public class PottedMushroomProcessor extends StructureProcessor {
         return blockInfoGlobal;
     }
 
-    protected StructureProcessorType<?> getType() {
+    @Override
+    public MapCodec<? extends StructureProcessor> codec() {
         return StructureProcessorTypeModule.POTTED_MUSHROOM_PROCESSOR;
     }
 }

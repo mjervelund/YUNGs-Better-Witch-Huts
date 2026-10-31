@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 
 
-public class BrewingStandProcessor extends StructureProcessor {
+public class BrewingStandProcessor implements StructureProcessor {
     public static final BrewingStandProcessor INSTANCE = new BrewingStandProcessor();
     public static final MapCodec<BrewingStandProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -25,7 +25,7 @@ public class BrewingStandProcessor extends StructureProcessor {
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader levelReader,
                                                              BlockPos jigsawPiecePos,
                                                              BlockPos jigsawPieceBottomCenterPos,
-                                                             StructureTemplate.StructureBlockInfo blockInfoLocal,
+                                                             BlockPos blockPosLocal,
                                                              StructureTemplate.StructureBlockInfo blockInfoGlobal,
                                                              StructurePlaceSettings structurePlacementData) {
         if (blockInfoGlobal.state().getBlock() == Blocks.BREWING_STAND) {
@@ -38,7 +38,8 @@ public class BrewingStandProcessor extends StructureProcessor {
         return blockInfoGlobal;
     }
 
-    protected StructureProcessorType<?> getType() {
+    @Override
+    public MapCodec<? extends StructureProcessor> codec() {
         return StructureProcessorTypeModule.BREWING_STAND_PROCESSOR;
     }
 
